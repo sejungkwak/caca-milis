@@ -1,14 +1,20 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { Montserrat, Dancing_Script } from "next/font/google";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../theme";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dancingScript = Dancing_Script({
+  variable: "--font-dancing_script",
+  weight: ["700"],
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata = {
@@ -18,8 +24,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${montserrat.variable} ${dancingScript.variable}`}
+    >
+      <body>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }
