@@ -3,12 +3,14 @@
 import {
   Box,
   Button,
+  Card,
   Container,
   Grid,
   Link,
   Typography,
   TextField,
 } from "@mui/material";
+import theme from "../theme";
 
 /**
  * Renders the sign in page when the application is first loaded.
@@ -51,6 +53,9 @@ export default function SignIn() {
     <Container
       component="main"
       sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         minWidth: "100vw",
         minHeight: "100vh",
         backgroundImage: {
@@ -62,14 +67,7 @@ export default function SignIn() {
         backgroundPosition: "bottom center",
       }}
     >
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <Card variant="outlined">
         <Typography component="h1" variant="h5">
           Sign in to Cáca Milis
         </Typography>
@@ -83,6 +81,7 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            color="bodyText"
           />
           <TextField
             margin="normal"
@@ -90,28 +89,32 @@ export default function SignIn() {
             fullWidth
             name="pass"
             label="Password"
-            type="pass"
+            type="password"
             id="pass"
             autoComplete="current-password"
+            color="bodyText"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
             Sign In
           </Button>
 
-          <Grid container>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+          <Typography
+            component="p"
+            variant="bodyText"
+            sx={{ textAlign: "center" }}
+          >
+            Don&apos;t have an account?{" "}
+            <Link
+              href="#"
+              color="inherit"
+              underline="always"
+              sx={{ alignSelf: "center" }}
+            >
+              Sign Up
+            </Link>
+          </Typography>
         </Box>
-      </Box>
+      </Card>
     </Container>
   );
 }
