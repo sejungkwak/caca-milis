@@ -1,5 +1,5 @@
 "use client";
-
+import * as React from "react";
 import {
   Box,
   Button,
@@ -12,45 +12,15 @@ import {
   TextField,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "../theme";
+
+import theme from "../../theme";
 
 /**
- * Renders the sign in page when the application is first loaded.
- * Handles email and password input and form submission.
+ * Renders the sign up page at /register.
+ * Handles email, password and confirm password input and form submission.
  * @returns JSX.Element
  */
-export default function SignIn() {
-  // send the sign in form data to the backend API for validation against the database.
-  async function runDBCallAsync(url) {
-    // make a call to the backend API
-    const res = await fetch(url);
-    // store the response from the database
-    const data = await res.json();
-
-    // validate the form data against the database entry
-    if (data.data == "valid") {
-      console.log("login is valid!");
-    } else {
-      console.log("not valid");
-    }
-  }
-
-  // handle the sign in button click event
-  const handleSubmit = (event) => {
-    // prevent the default browser behaviour of refreshing the page.
-    event.preventDefault();
-
-    // extract the form data from the form
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const pass = data.get("pass");
-
-    console.log("Sent email:" + email);
-    console.log("Sent pass:" + pass);
-
-    runDBCallAsync(`api/signIn?username=${email}&pass=${pass}`);
-  };
-
+export default function SignUp() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -73,14 +43,9 @@ export default function SignIn() {
       >
         <Card variant="outlined" sx={{ maxWidth: 500 }}>
           <Typography component="h1" variant="h5">
-            Sign in to Cáca Milis
+            Sign up to Cáca Milis
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" onSubmit={() => {}} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -100,11 +65,22 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="pass"
-              autoComplete="current-password"
+              autoComplete=""
+              color="bodyText"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPass"
+              label="Confirm Password"
+              type="password"
+              id="confirmPass"
+              autoComplete=""
               color="bodyText"
             />
             <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
-              Sign In
+              Sign Up
             </Button>
 
             <Typography
@@ -112,14 +88,14 @@ export default function SignIn() {
               variant="bodyText"
               sx={{ textAlign: "center" }}
             >
-              Don&apos;t have an account?{" "}
+              Already have an account?{" "}
               <Link
-                href="/register"
+                href="/"
                 color="inherit"
                 underline="always"
                 sx={{ alignSelf: "center" }}
               >
-                Sign Up
+                Sign In
               </Link>
             </Typography>
           </Box>
