@@ -1,18 +1,16 @@
 "use client";
-import * as React from "react";
+
 import {
   Box,
   Button,
   Card,
   Container,
   CssBaseline,
-  Grid,
   Link,
   Typography,
   TextField,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-
 import theme from "../../theme";
 
 /**
@@ -21,6 +19,44 @@ import theme from "../../theme";
  * @returns JSX.Element
  */
 export default function SignUp() {
+  // send the sign up form data to the backend API to store it in the data variable
+  async function runDBCallAsync(url) {
+    // make a call to the backend API
+    const res = await fetch(url);
+    // store the response from the database
+    const data = await res.json();
+
+    // if data is "true", the registration was successful and the user is registered
+    if (data.data === "true") {
+      console.log("registered.");
+    } else {
+      console.log("failed to register.");
+    }
+  }
+
+  // handle the sign up button click event
+  const handleSubmit = (event) => {
+    // prevent the default browser behaviour of refreshing the page
+    event.preventDefault();
+
+    // extract the form data from the form
+    const data = new FormData(event.currentTarget);
+    const email = data.get("email");
+    const pass = data.get("pass");
+    const confirmPass = data.get("confirmPass");
+
+    console.log("Sent email:" + email);
+    console.log("Sent pass:" + pass);
+    console.log("Sent confirmPass:" + confirmPass);
+
+    // call runDBCallAsync if the password field is not empty and password and confirm password match
+    if (pass !== "" && pass === confirmPass) {
+      runDBCallAsync(
+        `api/register?username=${email}&pass=${pass}&confirmPass=${confirmPass}`,
+      );
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -45,7 +81,12 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up to Cáca Milis
           </Typography>
-          <Box component="form" onSubmit={() => {}} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required

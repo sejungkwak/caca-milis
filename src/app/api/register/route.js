@@ -1,0 +1,54 @@
+/**
+ * Receives the user input from the sign up form.
+ * Adds a new document to the sign_in collection.
+ *
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ * @returns {Response} A JSON response containing the validation result
+ */
+export async function GET(req, res) {
+  // log a message to the console indicating that the request has reachedthe API.
+  console.log("in the api page");
+
+  // extract the email and password from the request
+  const { searchParams } = new URL(req.url);
+  const email = searchParams.get("username");
+  const pass = searchParams.get("pass");
+  const confirmPass = searchParams.get("confirmPass");
+
+  console.log(email);
+  console.log(pass);
+  console.log(confirmPass);
+
+  // database call ========================================
+
+  // import the MongoDB library
+  const { MongoClient } = require("mongodb");
+
+  // create a MongoDB client instance using the local database URL
+  const url = "mongodb://root:example@localhost:27017/";
+  const client = new MongoClient(url);
+
+  // store database and collection names in variables
+  const dbName = "app";
+  const collName = "sign_in";
+
+  // connect to MongoDB
+  await client.connect();
+  console.log("Connected successfully to server");
+  const db = client.db(dbName);
+  const collection = db.collection(collName);
+
+  // insert a new document into the sign_in collection
+  const insertResult = await collection.insertOne({
+    username: email,
+    pass: pass,
+  });
+
+  // ======================================== end database call
+
+  let valid = true;
+
+  // return the hard-coded validity flag
+  return Response.json({ data: "" + valid + "" });
+}
