@@ -32,6 +32,14 @@ export default function Dashboard() {
       });
   }, []);
 
+  // add a selected cake to shopping cart
+  function putInCart(cakeId, cakeName, cakePrice) {
+    console.log("putting in cart: " + cakeId);
+    fetch(
+      `api/putInCart?cakeId=${cakeId}&name=${cakeName}&price=${cakePrice}&quantity=1`,
+    );
+  }
+
   // display a default message if cakes data is not ready
   if (!cakes) return <p>Loading</p>;
 
@@ -81,7 +89,12 @@ export default function Dashboard() {
                       {cake.price}
                     </Typography>
                   </CardContent>
-                  <Button variant="contained">Add to cart</Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => putInCart(cake._id, cake.name, cake.price)}
+                  >
+                    Add to cart
+                  </Button>
                 </Card>
               </Grid>
             ))}
