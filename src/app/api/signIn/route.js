@@ -7,7 +7,7 @@
  * @returns {Response} A JSON response containing the validation result
  */
 export async function GET(req, res) {
-  // log a message to the console indicating that the request has reachedthe API.
+  // log a message to the console indicating that the request has reached the API.
   console.log("in the api page");
 
   // extract the email and password from the request
@@ -23,12 +23,12 @@ export async function GET(req, res) {
   // import the MongoDB library
   const { MongoClient } = require("mongodb");
 
-  // create a MongoDB client instance using the local database URL
-  const url = "mongodb://root:example@localhost:27017/";
+  // create a MongoDB client instance using the Atlas connection string
+  const url = process.env.MONGO_CONNECTION;
   const client = new MongoClient(url);
 
   // store database and collection names in variables
-  const dbName = "app";
+  const dbName = "caca-milis";
   const collName = "sign_in";
 
   // connect to MongoDB
