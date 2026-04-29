@@ -100,6 +100,20 @@ theme = createTheme(theme, {
         },
       },
     },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.dark.main,
+          fontFamily: "var(--font-montserrat)",
+          variants: [
+            {
+              props: { component: "th" },
+              style: { fontWeight: "600" },
+            },
+          ],
+        },
+      },
+    },
   },
 });
 
