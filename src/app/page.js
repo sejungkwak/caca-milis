@@ -6,7 +6,6 @@ import {
   Card,
   Container,
   CssBaseline,
-  Grid,
   Link,
   Typography,
   TextField,
@@ -48,7 +47,7 @@ export default function SignIn() {
     console.log("Sent email:" + email);
     console.log("Sent pass:" + pass);
 
-    runDBCallAsync(`api/signIn?username=${email}&pass=${pass}`);
+    runDBCallAsync(`api/signIn?email=${email}&pass=${pass}`);
   };
 
   return (

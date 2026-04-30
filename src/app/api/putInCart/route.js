@@ -1,6 +1,6 @@
 /**
  * Receives a selected cake item from the dashboard page.
- * Adds a new document to the shopping_cart collection
+ * Adds a new document to the carts collection
  * or increments an existing document's quantity by 1.
  *
  * @param {*} req HTTP request
@@ -31,7 +31,7 @@ export async function GET(req, res) {
 
   // store database and collection names in variables
   const dbName = "caca-milis";
-  const collName = "shopping_cart";
+  const collName = "carts";
 
   // connect to MongoDB
   await client.connect();
@@ -69,7 +69,7 @@ export async function GET(req, res) {
     },
   };
 
-  // insert a new document into the shopping_cart collection,
+  // insert a new document into the carts collection,
   // or update an existing document if selected cake already exists
   const upsertResult = await collection.updateOne(
     { username: "sample@test.com", "cake._id": cakeId },

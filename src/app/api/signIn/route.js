@@ -12,7 +12,7 @@ export async function GET(req, res) {
 
   // extract the email and password from the request
   const { searchParams } = new URL(req.url);
-  const email = searchParams.get("username");
+  const email = searchParams.get("email");
   const pass = searchParams.get("pass");
 
   console.log(email);
@@ -29,7 +29,7 @@ export async function GET(req, res) {
 
   // store database and collection names in variables
   const dbName = "caca-milis";
-  const collName = "sign_in";
+  const collName = "users";
 
   // connect to MongoDB
   await client.connect();
@@ -38,14 +38,14 @@ export async function GET(req, res) {
   const collection = db.collection(collName);
 
   // query the collection for a corresponding user record based on the username
-  const findResult = await collection.find({ username: email }).toArray();
+  const findResult = await collection.find({ email: email }).toArray();
   console.log("Found documents =>", findResult);
 
   // ======================================== end database call
 
   let valid = false;
   // valid only if both the username and password match the record
-  if (findResult.length > 0 && findResult[0]["pass"] === pass) {
+  if (findResult.length > 0 && findResult[0]["password"] === pass) {
     valid = true;
     console.log("login valid");
   } else {

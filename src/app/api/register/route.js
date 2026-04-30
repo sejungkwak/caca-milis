@@ -1,6 +1,6 @@
 /**
  * Receives the user input from the sign up form.
- * Adds a new document to the sign_in collection.
+ * Adds a new document to the users collection.
  *
  * @param {*} req HTTP request
  * @param {*} res HTTP response
@@ -12,7 +12,7 @@ export async function GET(req, res) {
 
   // extract the email and password from the request
   const { searchParams } = new URL(req.url);
-  const email = searchParams.get("username");
+  const email = searchParams.get("email");
   const pass = searchParams.get("pass");
   const role = searchParams.get("role");
 
@@ -31,7 +31,7 @@ export async function GET(req, res) {
 
   // store database and collection names in variables
   const dbName = "caca-milis";
-  const collName = "sign_in";
+  const collName = "users";
 
   // connect to MongoDB
   await client.connect();
@@ -39,10 +39,10 @@ export async function GET(req, res) {
   const db = client.db(dbName);
   const collection = db.collection(collName);
 
-  // insert a new document into the sign_in collection
+  // insert a new document into the users collection
   const insertResult = await collection.insertOne({
-    username: email,
-    pass: pass,
+    email: email,
+    password: pass,
     role: role,
   });
 

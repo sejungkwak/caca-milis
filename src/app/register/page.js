@@ -60,9 +60,7 @@ export default function SignUp() {
 
     // call runDBCallAsync if the password field is not empty and password and confirm password match
     if (pass !== "" && pass === confirmPass) {
-      runDBCallAsync(
-        `api/register?username=${email}&pass=${pass}&role=${role}`,
-      );
+      runDBCallAsync(`api/register?email=${email}&pass=${pass}&role=${role}`);
     }
   };
 

@@ -1,5 +1,5 @@
 /**
- * Retrieves all the documents from the shopping_cart collection
+ * Retrieves all the documents from the carts collection
  * and returns them as a JSON response.
  *
  * @param {*} req HTTP request
@@ -21,7 +21,7 @@ export async function GET(req, res) {
 
   // store database and collection names in variables
   const dbName = "caca-milis";
-  const collName = "shopping_cart";
+  const collName = "carts";
 
   // connect to MongoDB
   await client.connect();
