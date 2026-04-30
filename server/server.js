@@ -11,6 +11,7 @@ const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const Cake = require("./models/Cake");
 const Cart = require("./models/Cart");
+const Order = require("./models/Order");
 const auth = require("./middleware/auth.js");
 
 const app = express();
@@ -125,6 +126,27 @@ app.post("/cart", auth, async (req, res) => {
 app.delete("/cart/:id", auth, async (req, res) => {
   await Cart.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
   res.json({ message: "Deleted" });
+});
+
+app.post("/orders", auth, async (req, res) => {
+  // fetch all cart items for the user
+  const cartItems = await Cart.find({ userId: req.user.id });
+
+  if (cartItems.length === 0) {
+    return res.status(400).json({ message: "Cart is empty" });
+  }
+
+  // save cart items as a new order
+  const order = new Order({
+    userId: req.user.id,
+    items: cartItems.map((item) => item.cake),
+  });
+  await order.save();
+
+  // clear the user's cart after placing the order
+  await Cart.deleteMany({ userId: req.user.id });
+
+  res.json(order);
 });
 
 app.listen(5001, () => console.log("Server running on port 5001"));
