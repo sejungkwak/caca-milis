@@ -90,6 +90,10 @@ app.post("/refresh", (req, res) => {
   }
 });
 
+app.get("/dashboard", auth, (req, res) => {
+  res.json({ id: req.user.id, role: req.user.role });
+});
+
 app.get("/cakes", async (req, res) => {
   const cakes = await Cake.find();
   res.json(cakes);
@@ -101,26 +105,21 @@ app.get("/cart", auth, async (req, res) => {
 });
 
 app.post("/cart", auth, async (req, res) => {
-  const cartItem = new Cart({
-    userId: req.user.id,
-    cake: {
-      _id: cake._id,
-      name: cake.name,
-      quantity: cake.quantity,
-      price: cake.price,
+  const cartItem = await Cart.findOneAndUpdate(
+    // find an existing cart item for this user and cake
+    { userId: req.user.id, "cake._id": req.body.cake._id },
+    {
+      // increment quantity by 1 if found, or start at 1 if inserting
+      $inc: { "cake.quantity": 1 },
+      // set name and price only when inserting a new document
+      $setOnInsert: {
+        "cake.name": req.body.cake.name,
+        "cake.price": req.body.cake.price,
+      },
     },
-  });
-  await cartItem.save();
-  res.json(cartItem);
-});
-
-app.put("/cart/:id", auth, async (req, res) => {
-  const updated = await Cart.findOneAndUpdate(
-    { _id: req.params.id, userId: req.user.id },
-    { $set: { "cake.quantity": quantity } },
-    { new: true },
+    { upsert: true, new: true },
   );
-  res.json(updated);
+  res.json(cartItem);
 });
 
 app.delete("/cart/:id", auth, async (req, res) => {
