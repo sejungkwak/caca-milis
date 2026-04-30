@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
+import axios from "axios";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -14,6 +17,8 @@ import {
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../../theme";
 
+const API = "http://localhost:5001";
+
 /**
  * Renders the sign up page at /register.
  * Handles email, password and confirm password input and form submission.
@@ -26,41 +31,54 @@ export default function SignUp() {
     { value: "Admin", label: "Admin" },
   ];
 
-  // send the sign up form data to the backend API to store it in the data variable
-  async function runDBCallAsync(url) {
-    // make a call to the backend API
-    const res = await fetch(url);
-    // store the response from the database
-    const data = await res.json();
+  // store form data, initially an empty string
+  // or "Customer" until the sign up button is clicked
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+  const [role, setRole] = useState("Customer");
 
-    // if data is "true", the registration was successful and the user is registered
-    if (data.data === "true") {
-      console.log("registered.");
-    } else {
-      console.log("failed to register.");
-    }
-  }
+  // store custom alert messages
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   // handle the sign up button click event
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     // prevent the default browser behaviour of refreshing the page
     event.preventDefault();
 
-    // extract the form data from the form
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const pass = data.get("pass");
-    const confirmPass = data.get("confirmPass");
-    const role = data.get("role");
+    // if the email field is empty, show an error message
+    if (email === "") {
+      setError("Email is required.");
+      return;
+    }
 
-    console.log("Sent email:" + email);
-    console.log("Sent pass:" + pass);
-    console.log("Sent confirmPass:" + confirmPass);
-    console.log("Sent Role:" + role);
+    // if the password field is empty, show an error message
+    if (password === "") {
+      setError("Password is required.");
+      return;
+    }
 
-    // call runDBCallAsync if the password field is not empty and password and confirm password match
-    if (pass !== "" && pass === confirmPass) {
-      runDBCallAsync(`api/register?email=${email}&pass=${pass}&role=${role}`);
+    // if the password and confirm password do not match, show an error message
+    if (password !== confirmPass) {
+      setError("Password and confirm password do not match.");
+      return;
+    }
+
+    // if password and confirm password match, register a new user
+    if (password === confirmPass) {
+      const res = await axios.post(
+        `${API}/register`,
+        { email, password, role },
+        { withCredentials: true },
+      );
+      setSuccess(`Registered: ${res.data.message}.`);
+
+      // clear input fields after successful registration
+      setEmail("");
+      setPassword("");
+      setConfirmPass("");
+      setRole("Customer");
     }
   };
 
@@ -94,6 +112,16 @@ export default function SignUp() {
             noValidate
             sx={{ mt: 1 }}
           >
+            {error && (
+              <Alert severity="error" sx={{ width: "100%" }}>
+                {error}
+              </Alert>
+            )}
+            {success && (
+              <Alert severity="success" sx={{ width: "100%" }}>
+                {success}
+              </Alert>
+            )}
             <TextField
               margin="normal"
               required
@@ -104,6 +132,12 @@ export default function SignUp() {
               autoComplete="email"
               autoFocus
               color="bodyText"
+              value={email}
+              onChange={(event) => {
+                setError("");
+                setSuccess("");
+                setEmail(event.target.value);
+              }}
             />
             <TextField
               margin="normal"
@@ -115,6 +149,12 @@ export default function SignUp() {
               id="pass"
               autoComplete=""
               color="bodyText"
+              value={password}
+              onChange={(event) => {
+                setError("");
+                setSuccess("");
+                setPassword(event.target.value);
+              }}
             />
             <TextField
               margin="normal"
@@ -126,6 +166,12 @@ export default function SignUp() {
               id="confirmPass"
               autoComplete=""
               color="bodyText"
+              value={confirmPass}
+              onChange={(event) => {
+                setError("");
+                setSuccess("");
+                setConfirmPass(event.target.value);
+              }}
             />
             <TextField
               select
@@ -134,7 +180,8 @@ export default function SignUp() {
               fullWidth
               name="role"
               label="Role"
-              defaultValue="Customer"
+              value={role}
+              onChange={(event) => setRole(event.target.value)}
               color="bodyText"
             >
               {roles.map((option) => (

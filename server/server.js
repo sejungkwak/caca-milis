@@ -34,7 +34,7 @@ app.post("/register", async (req, res) => {
     role: req.body.role,
   });
   await user.save();
-  res.json({ message: "User created" });
+  res.json({ message: "Account is created" });
 });
 
 app.post("/login", async (req, res) => {
@@ -124,4 +124,4 @@ app.delete("/cart/:id", auth, async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+app.listen(5001, () => console.log("Server running on port 5001"));
