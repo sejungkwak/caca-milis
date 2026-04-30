@@ -23,13 +23,19 @@ export default function Dashboard() {
   // store cakes data, initially null until fetched
   const [cakes, setCakes] = useState(null);
 
+  // store weather data, initially 0 until fetched
+  const [weather, setWeather] = useState(0);
+
   useEffect(() => {
     // fetch cakes data from the server and store it in state
     fetch("api/getCakes")
       .then((res) => res.json())
-      .then((data) => {
-        setCakes(data);
-      });
+      .then((data) => setCakes(data));
+
+    // fetch weather data from weatherapi.com and store it in state
+    fetch("api/getWeather")
+      .then((res) => res.json())
+      .then((data) => setWeather(data));
   }, []);
 
   // add a selected cake to shopping cart
@@ -43,6 +49,9 @@ export default function Dashboard() {
   // display a default message if cakes data is not ready
   if (!cakes) return <p>Loading</p>;
 
+  // display a default message if weather data is not ready or is unavailable
+  if (!weather) return <p>No weather data is available.</p>;
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -55,9 +64,20 @@ export default function Dashboard() {
         }}
       >
         <Box sx={{ p: 8 }}>
-          <Typography component="h1" variant="h5">
-            Cakes
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography component="h1" variant="h5">
+              Cakes
+            </Typography>
+            <Typography>
+              Today&apos;s temperature: {JSON.stringify(weather.temp)}
+            </Typography>
+          </Box>
           <Grid container spacing={3}>
             {cakes.map((cake) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={cake._id}>

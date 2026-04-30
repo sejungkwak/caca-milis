@@ -87,13 +87,13 @@ theme = createTheme(theme, {
     MuiTypography: {
       styleOverrides: {
         root: {
+          color: theme.palette.dark.main,
+          fontFamily: "var(--font-montserrat)",
           variants: [
             {
               props: { variant: "h5" },
               style: {
-                fontFamily: "var(--font-montserrat)",
                 fontWeight: "600",
-                color: theme.palette.dark.main,
               },
             },
           ],
