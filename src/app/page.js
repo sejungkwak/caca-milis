@@ -1,6 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -13,41 +17,63 @@ import {
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 
+const API = "http://localhost:5001";
+
 /**
  * Renders the sign in page when the application is first loaded.
  * Handles email and password input and form submission.
  * @returns JSX.Element
  */
 export default function SignIn() {
-  // send the sign in form data to the backend API for validation against the database.
-  async function runDBCallAsync(url) {
-    // make a call to the backend API
-    const res = await fetch(url);
-    // store the response from the database
-    const data = await res.json();
+  // Next.js router for page navigation
+  const router = useRouter();
 
-    // validate the form data against the database entry
-    if (data.data == "valid") {
-      console.log("login is valid!");
-    } else {
-      console.log("not valid");
-    }
-  }
+  // store form data, initially an empty string
+  // until the sign in button is clicked
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // store custom error messages
+  const [error, setError] = useState("");
 
   // handle the sign in button click event
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     // prevent the default browser behaviour of refreshing the page.
     event.preventDefault();
 
-    // extract the form data from the form
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const pass = data.get("pass");
+    // if the email field is empty, show an error message
+    if (email === "") {
+      setError("Email is required.");
+      return;
+    }
 
-    console.log("Sent email:" + email);
-    console.log("Sent pass:" + pass);
+    // if the password field is empty, show an error message
+    if (password === "") {
+      setError("Password is required.");
+      return;
+    }
 
-    runDBCallAsync(`api/signIn?email=${email}&pass=${pass}`);
+    // send the sign in form data to the server for validation against the database.
+    try {
+      const res = await axios.post(
+        `${API}/login`,
+        { email, password },
+        { withCredentials: true },
+      );
+      // redirect to the dashboard page
+      router.push("/dashboard");
+    } catch (error) {
+      // show an auth error message for invalid credentials,
+      // otherwise show a generic error message.
+      if (
+        error.response.data.message === "User not found" ||
+        error.response.data.message === "Wrong password"
+      ) {
+        setError("Incorrect email or password.");
+      } else {
+        setError("Something went wrong.");
+      }
+    }
   };
 
   return (
@@ -80,6 +106,11 @@ export default function SignIn() {
             noValidate
             sx={{ mt: 1 }}
           >
+            {error && (
+              <Alert severity="error" sx={{ width: "100%" }}>
+                {error}
+              </Alert>
+            )}
             <TextField
               margin="normal"
               required
@@ -90,6 +121,11 @@ export default function SignIn() {
               autoComplete="email"
               autoFocus
               color="bodyText"
+              value={email}
+              onChange={(event) => {
+                setError("");
+                setEmail(event.target.value);
+              }}
             />
             <TextField
               margin="normal"
@@ -101,6 +137,11 @@ export default function SignIn() {
               id="pass"
               autoComplete="current-password"
               color="bodyText"
+              value={password}
+              onChange={(event) => {
+                setError("");
+                setPassword(event.target.value);
+              }}
             />
             <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
               Sign In

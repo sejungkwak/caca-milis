@@ -60,11 +60,15 @@ app.post("/login", async (req, res) => {
     },
   );
 
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    sameSite: "strict",
+  });
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     sameSite: "strict",
   });
-  res.json({ accessToken });
+  res.json({ role: user.role });
 });
 
 app.post("/refresh", (req, res) => {
