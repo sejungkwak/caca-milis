@@ -7,6 +7,7 @@ import {
   Container,
   CssBaseline,
   Link,
+  MenuItem,
   Typography,
   TextField,
 } from "@mui/material";
@@ -19,6 +20,12 @@ import theme from "../../theme";
  * @returns JSX.Element
  */
 export default function SignUp() {
+  // store available user role options for selection
+  const roles = [
+    { value: "Customer", label: "Customer" },
+    { value: "Admin", label: "Admin" },
+  ];
+
   // send the sign up form data to the backend API to store it in the data variable
   async function runDBCallAsync(url) {
     // make a call to the backend API
@@ -44,15 +51,17 @@ export default function SignUp() {
     const email = data.get("email");
     const pass = data.get("pass");
     const confirmPass = data.get("confirmPass");
+    const role = data.get("role");
 
     console.log("Sent email:" + email);
     console.log("Sent pass:" + pass);
     console.log("Sent confirmPass:" + confirmPass);
+    console.log("Sent Role:" + role);
 
     // call runDBCallAsync if the password field is not empty and password and confirm password match
     if (pass !== "" && pass === confirmPass) {
       runDBCallAsync(
-        `api/register?username=${email}&pass=${pass}&confirmPass=${confirmPass}`,
+        `api/register?username=${email}&pass=${pass}&role=${role}`,
       );
     }
   };
@@ -120,6 +129,22 @@ export default function SignUp() {
               autoComplete=""
               color="bodyText"
             />
+            <TextField
+              select
+              margin="normal"
+              required
+              fullWidth
+              name="role"
+              label="Role"
+              defaultValue="Customer"
+              color="bodyText"
+            >
+              {roles.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
             <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
               Sign Up
             </Button>

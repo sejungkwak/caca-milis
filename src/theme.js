@@ -19,10 +19,6 @@ theme = createTheme(theme, {
       fontFamily: "var(--font-montserrat)",
       color: theme.palette.dark.main,
     },
-    logo: {
-      fontFamily: "var(--font-dancing_script)",
-      color: theme.palette.dark.main,
-    },
   },
   palette: {
     primary: {
@@ -84,6 +80,43 @@ theme = createTheme(theme, {
         },
       },
     },
+
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          color: theme.palette.dark.main,
+          backgroundColor: theme.palette.light.main,
+        },
+      },
+    },
+
+    MuiMenu: {
+      styleOverrides: {
+        list: {
+          paddingTop: 0,
+          paddingBottom: 0,
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          backgroundColor: theme.palette.light.main,
+          color: theme.palette.dark.main,
+
+          "&:hover, &.Mui-selected:hover": {
+            backgroundColor: theme.palette.dark.main,
+            color: theme.palette.light.main,
+          },
+
+          "&.Mui-selected": {
+            backgroundColor: theme.palette.light.main,
+            color: theme.palette.dark.main,
+          },
+        },
+      },
+    },
+
     MuiTypography: {
       styleOverrides: {
         root: {
@@ -94,6 +127,13 @@ theme = createTheme(theme, {
               props: { variant: "h5" },
               style: {
                 fontWeight: "600",
+              },
+            },
+            {
+              props: { variant: "logo" },
+              style: {
+                fontFamily: "var(--font-dancing_script)",
+                color: theme.palette.dark.main,
               },
             },
           ],

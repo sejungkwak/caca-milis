@@ -14,11 +14,11 @@ export async function GET(req, res) {
   const { searchParams } = new URL(req.url);
   const email = searchParams.get("username");
   const pass = searchParams.get("pass");
-  const confirmPass = searchParams.get("confirmPass");
+  const role = searchParams.get("role");
 
   console.log(email);
   console.log(pass);
-  console.log(confirmPass);
+  console.log(role);
 
   // database call ========================================
 
@@ -43,6 +43,7 @@ export async function GET(req, res) {
   const insertResult = await collection.insertOne({
     username: email,
     pass: pass,
+    role: role,
   });
 
   // ======================================== end database call
