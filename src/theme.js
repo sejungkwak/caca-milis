@@ -133,6 +133,7 @@ theme = createTheme(theme, {
               props: { variant: "logo" },
               style: {
                 fontFamily: "var(--font-dancing_script)",
+                fontSize: 24,
                 color: theme.palette.dark.main,
               },
             },

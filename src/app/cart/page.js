@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   Dialog,
   DialogActions,
   DialogContent,
@@ -20,7 +19,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
 import theme from "../../theme";
 
 const API = "http://localhost:5001";
@@ -82,120 +80,117 @@ export default function Dashboard() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container
-        component="main"
-        sx={{
-          minWidth: "100vw",
-          minHeight: "100vh",
-          backgroundColor: theme.palette.primary.main,
-        }}
-      >
-        <Box sx={{ p: 8 }}>
-          <Typography component="h1" variant="h5">
-            Your Cart
-          </Typography>
-          {cart.length === 0 ? (
-            <Typography sx={{ marginTop: 4 }}>No cakes in your cart</Typography>
-          ) : (
-            <>
-              <TableContainer
-                sx={{ backgroundColor: theme.palette.primary.main }}
-              >
-                <Table sx={{ marginBlock: 4, minWidth: "100%" }}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell component="th">Cake</TableCell>
-                      <TableCell component="th" align="right">
-                        Price
-                      </TableCell>
-                      <TableCell component="th" align="right">
-                        Quantity
-                      </TableCell>
-                      <TableCell component="th" align="right">
-                        Subtotal
-                      </TableCell>
-                      <TableCell component="th" />
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {cart.map((cake) => {
-                      // remove the Euro sign from the price
-                      const price = cake.cake.price.slice(1);
+    <Container
+      component="main"
+      sx={{
+        minWidth: "100vw",
+        minHeight: "100vh",
+        backgroundColor: theme.palette.primary.main,
+      }}
+    >
+      <Box sx={{ p: 8 }}>
+        <Typography component="h1" variant="h5">
+          Your Cart
+        </Typography>
+        {cart.length === 0 ? (
+          <Typography sx={{ marginTop: 4 }}>No cakes in your cart</Typography>
+        ) : (
+          <>
+            <TableContainer
+              sx={{ backgroundColor: theme.palette.primary.main }}
+            >
+              <Table sx={{ marginBlock: 4, minWidth: "100%" }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell component="th">Cake</TableCell>
+                    <TableCell component="th" align="right">
+                      Price
+                    </TableCell>
+                    <TableCell component="th" align="right">
+                      Quantity
+                    </TableCell>
+                    <TableCell component="th" align="right">
+                      Subtotal
+                    </TableCell>
+                    <TableCell component="th" />
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {cart.map((cake) => {
+                    // remove the Euro sign from the price
+                    const price = cake.cake.price.slice(1);
 
-                      const subtotal =
-                        parseInt(price) * parseInt(cake.cake.quantity);
+                    const subtotal =
+                      parseInt(price) * parseInt(cake.cake.quantity);
 
-                      return (
-                        <TableRow key={cake.cake._id}>
-                          <TableCell scope="row">{cake.cake.name}</TableCell>
-                          <TableCell align="right">{cake.cake.price}</TableCell>
-                          <TableCell align="right">
-                            {cake.cake.quantity}
-                          </TableCell>
-                          <TableCell align="right">
-                            €{subtotal.toString()}
-                          </TableCell>
-                          <TableCell align="right">
-                            <Button
-                              variant="outlined"
-                              size="small"
-                              color="error"
-                              onClick={() => deleteItem(cake._id)}
-                            >
-                              Delete
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                    <TableRow>
-                      <TableCell component="th" colSpan={6} align="right">
-                        Total €{total}
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button variant="contained" onClick={handleSubmit}>
-                  Place order
-                </Button>
-              </Box>
-            </>
-          )}
-        </Box>
-        <Dialog
-          open={open}
-          slotProps={{
-            paper: { sx: { width: "50%", textAlign: "center", p: 2 } },
-          }}
-        >
-          <DialogContent>
-            <DialogContentText>
-              Thank you for ordering our cake!
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions sx={{ justifyContent: "center" }}>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setOpen(false);
-                router.push("/dashboard");
+                    return (
+                      <TableRow key={cake.cake._id}>
+                        <TableCell scope="row">{cake.cake.name}</TableCell>
+                        <TableCell align="right">{cake.cake.price}</TableCell>
+                        <TableCell align="right">
+                          {cake.cake.quantity}
+                        </TableCell>
+                        <TableCell align="right">
+                          €{subtotal.toString()}
+                        </TableCell>
+                        <TableCell align="right">
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="error"
+                            onClick={() => deleteItem(cake._id)}
+                          >
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  <TableRow>
+                    <TableCell component="th" colSpan={6} align="right">
+                      Total €{total}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Container>
-    </ThemeProvider>
+              <Button variant="contained" onClick={handleSubmit}>
+                Place order
+              </Button>
+            </Box>
+          </>
+        )}
+      </Box>
+      <Dialog
+        open={open}
+        slotProps={{
+          paper: { sx: { width: "50%", textAlign: "center", p: 2 } },
+        }}
+      >
+        <DialogContent>
+          <DialogContentText>
+            Thank you for ordering our cake!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center" }}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setOpen(false);
+              router.push("/dashboard");
+            }}
+          >
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
   );
 }

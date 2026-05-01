@@ -9,13 +9,10 @@ import {
   Button,
   Card,
   Container,
-  CssBaseline,
   Link,
   Typography,
   TextField,
 } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../theme";
 
 const API = "http://localhost:5001";
 
@@ -77,94 +74,86 @@ export default function SignIn() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container
-        component="main"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minWidth: "100vw",
-          minHeight: "100vh",
-          backgroundImage: {
-            xs: "url(/background_mobile.png)",
-            md: "url(/background_web.png)",
-          },
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "bottom center",
-        }}
-      >
-        <Card variant="outlined" sx={{ maxWidth: 500 }}>
-          <Typography component="h1" variant="h5">
-            Sign in to Cáca Milis
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            {error && (
-              <Alert severity="error" sx={{ width: "100%" }}>
-                {error}
-              </Alert>
-            )}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              color="bodyText"
-              value={email}
-              onChange={(event) => {
-                setError("");
-                setEmail(event.target.value);
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="pass"
-              label="Password"
-              type="password"
-              id="pass"
-              autoComplete="current-password"
-              color="bodyText"
-              value={password}
-              onChange={(event) => {
-                setError("");
-                setPassword(event.target.value);
-              }}
-            />
-            <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
-              Sign In
-            </Button>
+    <Container
+      component="main"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minWidth: "100vw",
+        minHeight: "100vh",
+        backgroundImage: {
+          xs: "url(/background_mobile.png)",
+          md: "url(/background_web.png)",
+        },
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "bottom center",
+      }}
+    >
+      <Card variant="outlined" sx={{ maxWidth: 500 }}>
+        <Typography component="h1" variant="h5">
+          Sign in to Cáca Milis
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {error && (
+            <Alert severity="error" sx={{ width: "100%" }}>
+              {error}
+            </Alert>
+          )}
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            color="bodyText"
+            value={email}
+            onChange={(event) => {
+              setError("");
+              setEmail(event.target.value);
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="pass"
+            label="Password"
+            type="password"
+            id="pass"
+            autoComplete="current-password"
+            color="bodyText"
+            value={password}
+            onChange={(event) => {
+              setError("");
+              setPassword(event.target.value);
+            }}
+          />
+          <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
+            Sign In
+          </Button>
 
-            <Typography
-              component="p"
-              variant="bodyText"
-              sx={{ textAlign: "center" }}
+          <Typography
+            component="p"
+            variant="bodyText"
+            sx={{ textAlign: "center" }}
+          >
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/register"
+              color="inherit"
+              underline="always"
+              sx={{ alignSelf: "center" }}
             >
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/register"
-                color="inherit"
-                underline="always"
-                sx={{ alignSelf: "center" }}
-              >
-                Sign Up
-              </Link>
-            </Typography>
-          </Box>
-        </Card>
-      </Container>
-    </ThemeProvider>
+              Sign Up
+            </Link>
+          </Typography>
+        </Box>
+      </Card>
+    </Container>
   );
 }

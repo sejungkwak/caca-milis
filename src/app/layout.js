@@ -3,6 +3,7 @@ import { Montserrat, Dancing_Script } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import theme from "../theme";
+import Navbar from "./components/navbar";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <Navbar />
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
