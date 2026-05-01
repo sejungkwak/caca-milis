@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import theme from "../../../theme";
 
-const API = "http://localhost:5001";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
 
 /**
  * Maps over the cakes data and renders each cake in a box

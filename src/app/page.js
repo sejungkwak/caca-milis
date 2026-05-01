@@ -14,7 +14,7 @@ import {
   TextField,
 } from "@mui/material";
 
-const API = "http://localhost:5001";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
 
 /**
  * Renders the sign in page when the application is first loaded.
@@ -63,8 +63,8 @@ export default function SignIn() {
       // show an auth error message for invalid credentials,
       // otherwise show a generic error message.
       if (
-        error.response.data.message === "User not found" ||
-        error.response.data.message === "Wrong password"
+        error.response?.data?.message === "User not found" ||
+        error.response?.data?.message === "Wrong password"
       ) {
         setError("Incorrect email or password.");
       } else {

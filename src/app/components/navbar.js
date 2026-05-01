@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import axios from "axios";
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 
-const API = "http://localhost:5001";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
 
 /**
  * Renders the navbar with links based on the signed-in user's role.

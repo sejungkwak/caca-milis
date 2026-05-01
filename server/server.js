@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: require("path").join(__dirname, "../.env") });
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -24,8 +24,14 @@ app.use(cookieParser());
 
 mongoose
   .connect(process.env.MONGO_CONNECTION)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+  .then(() => {
+    console.log("MongoDB Connected");
+    app.listen(5001, () => console.log("Server running on port 5001"));
+  })
+  .catch((error) => {
+    console.error("MongoDB connection failed:", error.message);
+    process.exit(1);
+  });
 
 app.post("/register", async (req, res) => {
   const hashed = await bcrypt.hash(req.body.password, 12);
@@ -61,13 +67,16 @@ app.post("/login", async (req, res) => {
     },
   );
 
+  const isProduction = process.env.NODE_ENV === "production";
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: isProduction ? "none" : "strict",
+    secure: isProduction,
   });
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: isProduction ? "none" : "strict",
+    secure: isProduction,
   });
   res.json({ role: user.role });
 });
@@ -96,9 +105,14 @@ app.get("/auth", auth, (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  // clear both cookies
-  res.clearCookie("accessToken", { path: "/" });
-  res.clearCookie("refreshToken", { path: "/" });
+  const isProduction = process.env.NODE_ENV === "production";
+  const options = {
+    path: "/",
+    sameSite: isProduction ? "none" : "strict",
+    secure: isProduction,
+  };
+  res.clearCookie("accessToken", options);
+  res.clearCookie("refreshToken", options);
   res.json({ message: "Logged out" });
 });
 
@@ -161,5 +175,3 @@ app.post("/orders", auth, async (req, res) => {
 
   res.json(order);
 });
-
-app.listen(5001, () => console.log("Server running on port 5001"));
