@@ -128,6 +128,12 @@ app.delete("/cart/:id", auth, async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
+app.get("/orders", async (req, res) => {
+  // show most recent orders first
+  const orders = await Order.find().sort({ createdAt: -1 });
+  res.json(orders);
+});
+
 app.post("/orders", auth, async (req, res) => {
   // fetch all cart items for the user
   const cartItems = await Cart.find({ userId: req.user.id });

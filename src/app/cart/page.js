@@ -60,7 +60,7 @@ export default function Dashboard() {
   // calculate the total price in the cart
   const total = cart.reduce((accumulator, item) => {
     const price = parseInt(item.cake.price.slice(1));
-    const quantity = parseInt(item.cake.quantity);
+    const quantity = item.cake.quantity;
     const subtotal = price * quantity;
     return accumulator + subtotal;
   }, 0);
