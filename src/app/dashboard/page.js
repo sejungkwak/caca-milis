@@ -24,7 +24,7 @@ export default function Dashboard() {
     // fetch the signed-in user's role from the server
     const fetchRole = async () => {
       try {
-        const res = await axios.get(`${API}/dashboard`, {
+        const res = await axios.get(`${API}/auth`, {
           withCredentials: true,
         });
         setRole(res.data.role);

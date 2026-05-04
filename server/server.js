@@ -1,3 +1,5 @@
+// Back-end code adapted from the lecture example for Secure Notes App and modified for my site
+
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
@@ -91,8 +93,15 @@ app.post("/refresh", (req, res) => {
   }
 });
 
-app.get("/dashboard", auth, (req, res) => {
+app.get("/auth", auth, (req, res) => {
   res.json({ id: req.user.id, role: req.user.role });
+});
+
+app.post("/logout", (req, res) => {
+  // clear both cookies
+  res.clearCookie("accessToken", { path: "/" });
+  res.clearCookie("refreshToken", { path: "/" });
+  res.json({ message: "Logged out" });
 });
 
 app.get("/cakes", async (req, res) => {

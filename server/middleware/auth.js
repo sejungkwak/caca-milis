@@ -1,3 +1,5 @@
+// Exporess auth middleware code taken from the lecture example for Secure Notes App
+
 const jwt = require("jsonwebtoken");
 
 module.exports = function (req, res, next) {

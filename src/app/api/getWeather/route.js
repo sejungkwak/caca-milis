@@ -1,3 +1,5 @@
+// Weather API call taken from the lecture example for Task 5.1 - Integrating an API- example-weather
+
 /**
  * Fetches weather data for Dublin from Weatherapi.com
  * and returns the current temperature as JSON.
