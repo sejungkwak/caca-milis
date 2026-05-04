@@ -18,6 +18,8 @@ const auth = require("./middleware/auth.js");
 
 const app = express();
 
+const PORT = process.env.PORT;
+
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: "10kb" }));
 app.use(helmet());
@@ -65,11 +67,13 @@ app.post("/login", async (req, res) => {
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "none",
+    secure: true,
   });
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "none",
+    secure: true,
   });
   res.json({ role: user.role });
 });
@@ -164,4 +168,4 @@ app.post("/orders", auth, async (req, res) => {
   res.json(order);
 });
 
-app.listen(5001, () => console.log("Server running on port 5001"));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}.`));

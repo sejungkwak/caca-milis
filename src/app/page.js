@@ -14,7 +14,7 @@ import {
   TextField,
 } from "@mui/material";
 
-const API = "http://localhost:5001";
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 /**
  * Renders the sign in page when the application is first loaded.
