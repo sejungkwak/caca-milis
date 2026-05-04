@@ -49,6 +49,19 @@ export default function AdminDashboard() {
   // display a default message until orders are fetched
   if (!orders) return <p>Loading</p>;
 
+  // calculate the total for all orders
+  const grandTotal = orders.reduce((accumulator, order) => {
+    return (
+      accumulator +
+      order.items.reduce((itemAccumulator, item) => {
+        const price = parseInt(item.price.slice(1));
+        const quantity = item.quantity;
+        const total = itemAccumulator + price * quantity;
+        return total;
+      }, 0)
+    );
+  }, 0);
+
   return (
     <Container
       component="main"
@@ -61,6 +74,9 @@ export default function AdminDashboard() {
       <Box sx={{ p: 8 }}>
         <Typography component="h1" variant="h5">
           Orders
+        </Typography>
+        <Typography variant="h6" sx={{ mt: 2 }}>
+          Grand Total: €{grandTotal}
         </Typography>
         {orders.length === 0 ? (
           <Typography sx={{ marginTop: 4 }}>
@@ -118,7 +134,7 @@ export default function AdminDashboard() {
                       })}
                       <TableRow>
                         <TableCell component="th" colSpan={4} align="right">
-                          Order Total €{orderTotal}
+                          Total €{orderTotal}
                         </TableCell>
                       </TableRow>
                     </TableBody>
