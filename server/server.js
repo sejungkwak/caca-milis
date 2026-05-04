@@ -103,8 +103,18 @@ app.get("/auth", auth, (req, res) => {
 
 app.post("/logout", (req, res) => {
   // clear both cookies
-  res.clearCookie("accessToken", { path: "/" });
-  res.clearCookie("refreshToken", { path: "/" });
+  res.clearCookie("accessToken", {
+    path: "/",
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
+  res.clearCookie("refreshToken", {
+    path: "/",
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
   res.json({ message: "Logged out" });
 });
 
