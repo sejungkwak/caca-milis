@@ -1,5 +1,7 @@
 "use client";
 
+// Cake images were generated using Perplexity AI
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -14,7 +16,7 @@ import {
 } from "@mui/material";
 import theme from "../../../theme";
 
-const API = process.env.NEXT_PUBLIC_API_URL;
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
 
 /**
  * Maps over the cakes data and renders each cake in a box
