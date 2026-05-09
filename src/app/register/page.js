@@ -86,8 +86,8 @@ export default function SignUp() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        flex: 1,
         minWidth: "100vw",
-        minHeight: "100vh",
         backgroundImage: {
           xs: "url(/background_mobile.png)",
           md: "url(/background_web.png)",

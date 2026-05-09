@@ -83,8 +83,8 @@ export default function Dashboard() {
     <Container
       component="main"
       sx={{
+        flex: 1,
         minWidth: "100vw",
-        minHeight: "100vh",
         backgroundColor: theme.palette.primary.main,
       }}
     >

@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${montserrat.variable} ${dancingScript.variable}`}
     >
-      <body>
+      <body className={{ minHeight: "100vh" }}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
