@@ -5,6 +5,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -26,6 +27,9 @@ const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
 export default function CustomerDashboard() {
   // store cakes data, initially null until fetched
   const [cakes, setCakes] = useState(null);
+
+  // store custom alert message
+  const [success, setSuccess] = useState("");
 
   // store weather data, initially null until fetched
   const [weather, setWeather] = useState(null);
@@ -59,6 +63,13 @@ export default function CustomerDashboard() {
       },
       { withCredentials: true },
     );
+
+    setSuccess(`${cakeName} has been added to your cart successfully!`);
+
+    // dismiss the success message after 2 seconds
+    setTimeout(() => {
+      setSuccess("");
+    }, 2000);
   };
 
   // display a default message if cakes data is not ready
@@ -101,6 +112,11 @@ export default function CustomerDashboard() {
                   flexDirection: "column",
                 }}
               >
+                {success && success.includes(cake.name) && (
+                  <Alert severity="success" sx={{ width: "100%" }}>
+                    {success}
+                  </Alert>
+                )}
                 <CardMedia component="img" alt={cake.name} image={cake.image} />
                 <CardContent
                   sx={{
